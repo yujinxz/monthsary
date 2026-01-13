@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Surprise❤️</title>
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #ffd1dc;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* TITLE */
+h1 {
+  margin-top: 20px;
+  color: white;
+}
+
+/* SLIDER */
+.slider {
+  display: none;
+  width: 80%;
+  max-width: 520px;
+  height: 300px;
+  margin: 25px auto;
+  overflow: hidden;
+  border-radius: 20px;
+  background: black;
+}
+
+.slides {
+  display: flex;
+  height: 100%;
+  transition: transform 1.2s ease-in-out;
+}
+
+.slides img {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  object-fit: contain;
+  background: black;
+}
+
+/* BUTTONS */
+#buttons {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 140px;
+  position: relative;
+  z-index: 10;
+}
+
+button {
+  padding: 22px 48px;
+  font-size: 22px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+#yesBtn {
+  background: #87CEEB;
+  color: white;
+}
+
+#noBtn {
+  background: #ff8fa3;
+  color: white;
+  position: relative; /* ✅ STARTS SIDE BY SIDE */
+}
+
+/* CHIBI */
+#chibiBox {
+  position: fixed;
+  display: none;
+  z-index: 5;
+}
+
+#chibiText {
+  color: white;
+  font-size: 20px;
+}
+
+#chibi {
+  width: 120px;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+/* TULIPS */
+.tulip {
+  position: fixed;
+  bottom: -60px;
+  width: 36px;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  from { bottom: -60px; }
+  to { bottom: 110vh; }
+}
+
+/* MESSAGE */
+#surprise {
+  display: none;
+  color: white;
+  max-width: 600px;
+  margin: 50px auto;
+  line-height: 1.7;
+  font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="title">Will you go on a date with me? 🥺🌷</h1>
+
+<div class="slider" id="slider">
+  <div class="slides" id="slides">
+    <img src="photo1.jpg">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
+    <img src="photo4.jpg">
+    <img src="photo5.jpg">
+    <img src="photo6.jpg">
+    <img src="photo7.jpg">
+    <img src="photo8.jpg">
+    <img src="photo9.jpg">
+    <img src="photo10.jpg">
+  </div>
+</div>
+
+<div id="buttons">
+  <button id="yesBtn">Yes 💕</button>
+  <button id="noBtn">No 💔</button>
+</div>
+
+<div id="chibiBox">
+  <div id="chibiText">please say yes 😭</div>
+  <img id="chibi" src="pout1.png">
+</div>
+
+<div id="surprise">
+  <h2>Happy Monthsary, My Love 💖</h2>
+  <p>
+    I know nga karon dili pa ta kaayo ka-date-date,<br>
+    kay wala pa jud tay kwarta kita duha 😔<br><br>
+
+    Pero bawi lang ta jud sa love.<br>
+    Karon nag lisod ta, pero puhon…<br>
+    kada adlaw na ta mag-date 🥰<br><br>
+
+    I LOVE YOU SO MUCH LOVELOVE NAKO💕<br>
+    Happy 3 Years & 3 Months to Us 💖
+  </p>
+</div>
+
+<audio id="music" src="song.mp3"></audio>
+
+<script>
+/* SLIDER */
+let slideIndex = 0;
+const slides = document.getElementById("slides");
+const totalSlides = slides.children.length;
+
+function startSlider() {
+  setInterval(() => {
+    slideIndex = (slideIndex + 1) % totalSlides;
+    slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+  }, 4000);
+}
+
+/* AUTO SCROLL */
+function startAutoScroll() {
+  document.body.style.overflowY = "auto";
+  const speed = 0.3;
+  const scroll = setInterval(() => {
+    window.scrollBy(0, speed);
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
+      clearInterval(scroll);
+    }
+  }, 20);
+}
+
+/* BUTTON LOGIC */
+let noClicks = 0;
+let chibiSize = 120;
+let noScale = 1;
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const buttons = document.getElementById("buttons");
+const chibiBox = document.getElementById("chibiBox");
+const chibi = document.getElementById("chibi");
+
+function moveNoEdge() {
+  noBtn.style.position = "fixed"; /* ✅ ONLY AFTER CLICK */
+
+  const edge = Math.floor(Math.random() * 4);
+  const pad = 10;
+
+  if (edge === 0) { noBtn.style.top = pad+"px"; noBtn.style.left = Math.random()*80+"vw"; }
+  if (edge === 1) { noBtn.style.top = (window.innerHeight-70)+"px"; noBtn.style.left = Math.random()*80+"vw"; }
+  if (edge === 2) { noBtn.style.left = pad+"px"; noBtn.style.top = Math.random()*70+"vh"; }
+  if (edge === 3) { noBtn.style.left = (window.innerWidth-120)+"px"; noBtn.style.top = Math.random()*70+"vh"; }
+}
+
+noBtn.onclick = () => {
+  noClicks++;
+
+  chibiBox.style.display = "block";
+  chibi.src = `pout${Math.min(noClicks,10)}.png`;
+
+  chibiSize = Math.min(240, chibiSize + 12);
+  chibi.style.width = chibiSize + "px";
+
+  chibiBox.style.left = Math.random()*70 + "vw";
+  chibiBox.style.top = Math.random()*55 + "vh";
+
+  noScale -= 0.08;
+  noBtn.style.transform = `scale(${noScale})`;
+
+  moveNoEdge();
+};
+
+yesBtn.onclick = () => {
+  document.getElementById("title").innerText =
+    "YESSSS 😭 THANK YOU FOR GOING OUT WITH ME 🥺🌷";
+
+  buttons.style.display = "none";
+  chibiBox.remove();
+
+  document.getElementById("slider").style.display = "block";
+  document.getElementById("surprise").style.display = "block";
+  document.getElementById("music").play();
+
+  startSlider();
+  startAutoScroll();
+
+  for (let i = 0; i < 20; i++) {
+    const t = document.createElement("img");
+    t.src = "tulip.png";
+    t.className = "tulip";
+    t.style.left = Math.random()*100+"vw";
+    t.style.animationDuration = 5 + Math.random()*5 + "s";
+    document.body.appendChild(t);
+  }
+};
+</script>
+
+</body>
+</html>
